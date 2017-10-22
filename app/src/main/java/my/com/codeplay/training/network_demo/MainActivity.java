@@ -192,7 +192,18 @@ public class MainActivity extends AppCompatActivity implements NetworkCallback {
                                 .show();
                     }
                 }
-        );
+        ) {
+            /**
+             * Prioritize the request if multiple requests are sent at the same time.
+             *
+             * @return Priority in NORMAL, LOW, HIGH and IMMEDIATE
+             */
+            @Override
+            public Priority getPriority() {
+                //return super.getPriority();
+                return Priority.NORMAL;
+            }
+        };
 
         /*
         GsonRequest<WeatherData> request = new GsonRequest<WeatherData>(url, WeatherData.class, null,
@@ -226,6 +237,9 @@ public class MainActivity extends AppCompatActivity implements NetworkCallback {
                 }
         );
         // */
+
+        // disable cache for this request
+        request.setShouldCache(false);
 
         VolleyManager.getInstance(this).enqueue(request, WEATHER_BASE_URL);
     }

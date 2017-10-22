@@ -15,8 +15,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public class NetworkFragment extends Fragment {
     private static final String TAG = NetworkFragment.class.getSimpleName();
     private static final String KEY_URL = "URL";
@@ -184,7 +182,7 @@ public class NetworkFragment extends Fragment {
          */
         private String open(URL url) throws IOException {
             HttpURLConnection connection = null;
-            BufferedReader bufferedReader = null;
+            BufferedReader reader = null;
             String result = null;
             try {
                 connection = (HttpURLConnection) url.openConnection();
@@ -203,17 +201,17 @@ public class NetworkFragment extends Fragment {
                 publishProgress(NetworkCallback.Progress.CONNECT_SUCCESS, 0);
 
                 int responseCode = connection.getResponseCode();
-                if (responseCode != HttpsURLConnection.HTTP_OK) {
+                if (responseCode != HttpURLConnection.HTTP_OK) {
                     throw new IOException("HTTP error code: " + responseCode);
                 }
 
                 // Retrieve the response body as an InputStream.
-                bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 publishProgress(NetworkCallback.Progress.GET_INPUT_STREAM_SUCCESS, 0);
 
                 String realine;
                 StringBuilder stringBuilder = new StringBuilder();
-                while ((realine = bufferedReader.readLine()) != null) {
+                while ((realine = reader.readLine()) != null) {
                     /*
                      * Since the returned data is in JSON, adding a newline isn't necessary
                      * (It won't affect parsing), but it does make debugging a lot easier
@@ -225,8 +223,8 @@ public class NetworkFragment extends Fragment {
                 publishProgress(NetworkCallback.Progress.PROCESS_INPUT_STREAM_SUCCESS, 0);
             } finally {
                 // Close Stream and disconnect HTTPS connection.
-                if (bufferedReader != null) {
-                    bufferedReader.close();
+                if (reader != null) {
+                    reader.close();
                 }
                 if (connection != null) {
                     connection.disconnect();
