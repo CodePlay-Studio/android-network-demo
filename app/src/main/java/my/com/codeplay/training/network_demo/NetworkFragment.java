@@ -5,9 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,13 +47,15 @@ public class NetworkFragment extends Fragment {
         // Retain this fragment across configuration changes in the host Activity
         setRetainInstance(true);
 
-        url = getArguments().getString(KEY_URL);
+        if (getArguments() != null) {
+            url = getArguments().getString(KEY_URL);
+        }
 
         //startRequest();
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
@@ -183,7 +187,7 @@ public class NetworkFragment extends Fragment {
         private String open(URL url) throws IOException {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
-            String result = null;
+            String result;
             try {
                 connection = (HttpURLConnection) url.openConnection();
                 // Timeout for reading InputStream arbitrarily set to 3000ms.
