@@ -1,0 +1,55 @@
+<!--
+  Copyright (c) 2017 CodePlay Studio. All rights reserved.
+
+  This app is designed for training purpose used in Native Android™
+  for Mobile Development course conducted by CodePlay Studio.
+  The source code is provided "AS IS". Any expressed or implied warranties,
+  including, but not limited to, the implied warranties of merchantability
+  and fitness for a particular purpose are disclaimed. In no event shall the
+  copyright holder be liable for any direct, indirect, incidental, special,
+  exemplary, or consequential damages (Including, but not limited to,
+  procurement of goods or services; loss of use, data, or profits;
+  or business interruption) however caused and on any theory of liability,
+  whether in contract, strict liability, or tort (Including negligence or otherwise)
+  arising in any way out of the use of this source code, even if advised of the
+  possibility of such damage.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the above copyright notice
+  and disclaimer are retained in the redistributions of source code or
+  reproduced in the documentation and/or other materials provided
+  with the redistributions in binary form.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <style name="BasedFont" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BasedFont.ExtraLarge" parent="BasedFont">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="BasedFont.Large" parent="BasedFont">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="BasedFont.Medium" parent="BasedFont">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BasedFont.Small" parent="BasedFont">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BasedFont.ExtraSmall" parent="BasedFont">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="SmallFont" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2017 CodePlay Studio. All rights reserved.
+
+  This app is designed for training purpose used in Native Android™
+  for Mobile Development course conducted by CodePlay Studio.
+  The source code is provided "AS IS". Any expressed or implied warranties,
+  including, but not limited to, the implied warranties of merchantability
+  and fitness for a particular purpose are disclaimed. In no event shall the
+  copyright holder be liable for any direct, indirect, incidental, special,
+  exemplary, or consequential damages (Including, but not limited to,
+  procurement of goods or services; loss of use, data, or profits;
+  or business interruption) however caused and on any theory of liability,
+  whether in contract, strict liability, or tort (Including negligence or otherwise)
+  arising in any way out of the use of this source code, even if advised of the
+  possibility of such damage.
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the above copyright notice
+  and disclaimer are retained in the redistributions of source code or
+  reproduced in the documentation and/or other materials provided
+  with the redistributions in binary form.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/layout_weather"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            tools:ignore="RelativeOverlap">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/weather_source"
+                style="@style/SmallFont" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="-, -"
+                style="@style/SmallFont"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/temperature"
+                style="@style/BasedFont.ExtraLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="-"
+                tools:ignore="HardcodedText"
+                app:drawableLeftCompat="@drawable/ic_temperature"
+                app:drawableRightCompat="@drawable/ic_celcius"
+                app:drawableStartCompat="@drawable/ic_temperature"
+                app:drawableEndCompat="@drawable/ic_celcius"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/button_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@null"
+            android:contentDescription="@string/history"
+            android:src="@drawable/outline_history_24" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            tools:ignore="RelativeOverlap">
+
+            <RelativeLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp">
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/BasedFont.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                tools:ignore="HardcodedText" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/wind_speed"
+                    style="@style/BasedFont.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:text="- mps"
+                    tools:ignore="HardcodedText"
+                    app:drawableStartCompat="@drawable/ic_wind"
+                    app:drawableLeftCompat="@drawable/ic_wind" />
+
+                <TextView
+                    android:id="@+id/humidity"
+                    style="@style/BasedFont.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/view_margin"
+                    android:drawablePadding="4dp"
+                    android:text="-%"
+                    tools:ignore="HardcodedText"
+                    app:drawableLeftCompat="@drawable/ic_humidity"
+                    app:drawableStartCompat="@drawable/ic_humidity" />
+
+                <TextView
+                    android:id="@+id/cloudiness"
+                    style="@style/BasedFont.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/view_margin"
+                    android:drawablePadding="4dp"
+                    android:text="-%"
+                    tools:ignore="HardcodedText"
+                    app:drawableLeftCompat="@drawable/ic_cloudiness"
+                    app:drawableStartCompat="@drawable/ic_cloudiness" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/view_margin">
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:indeterminateDrawable="@drawable/spinner"
+                    android:indeterminate="true"
+                    android:indeterminateOnly="true"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/button_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:contentDescription="@string/refresh"
+                    android:src="@drawable/outline_refresh_24" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout android:id="@+id/layout_no_conn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+
+        <LinearLayout android:id="@+id/panel_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_centerInParent="true"
+            android:orientation="vertical" >
+
+            <TextView android:id="@+id/message"
+                style="@style/BasedFont.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="@string/no_connection" />
+
+            <Button android:id="@+id/button_retry"
+                android:background="@drawable/rounded_button_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="@string/retry" />
+
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/panel_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:indeterminateDrawable="@drawable/spinner"
+                android:indeterminate="true"
+                android:indeterminateOnly="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                style="@style/BasedFont.Medium"
+                android:text="@string/loading" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            style="@style/SmallFont"
+            android:text="@string/copyright_statement" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/SmallFont"
+            android:text="@string/credit_statement" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+

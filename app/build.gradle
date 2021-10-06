@@ -4,7 +4,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "my.com.codeplay.training.network_demo"
+        applicationId "my.com.codeplay.training.weatherapp"
         minSdkVersion 15
         targetSdkVersion 29
         versionCode 1

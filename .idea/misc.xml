@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app/src/main/res/drawable/rounded_button_1.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app_v2/src/main/res/drawable/outline_history_24.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app_v2/src/main/res/drawable/outline_refresh_24.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app_v2/src/main/res/drawable/rounded_button_1.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app_v2/src/main/res/layout/activity_history.xml" value="0.2" />
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app_v2/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Android/StudioProjects/android-network-demo/app_v2/src/main/res/layout/list_item.xml" value="0.2" />
+      </map>
+    </option>
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
-    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
+    <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />
     <option name="myNullables">
       <value>
         <list size="14">
