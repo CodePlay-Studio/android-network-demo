@@ -1,2 +1,2 @@
-include ':app'
-include ':app_v2'
+include ':weather_v1'
+include ':weather_v2'
