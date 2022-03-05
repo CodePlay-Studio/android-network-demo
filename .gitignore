@@ -2,36 +2,24 @@
 # For Gradle or Maven based projects, these files will be generated on import
 *.iml
 .idea/gradle.xml
-/.idea/gradle.xml
 .idea/jarRepositories.xml
-/.idea/jarRepositories.xml
 .idea/modules.xml
-/.idea/modules.xml
 .idea/dictionaries
-/.idea/dictionaries
 .idea/libraries
-/.idea/libraries
 # these files or directories store user-specific settings
 .idea/tasks.xml
-/.idea/tasks.xml
 .idea/usage.statistics.xml
-/.idea/usage.statistics.xml
 .idea/workspace.xml
-/.idea/workspace.xml
 .idea/shelf
-/.idea/shelf
 .idea/caches
-/.idea/caches
 # .name consists of the project name displayed on the title bar of Android Studio
 .idea/.name
-/.idea/.name
 # navEditor.xml stores the x/y positions of visual elements in the Navigation Resource editor,
 .idea/navEditor.xml
-/.idea/navEditor.xml
 # assetWizardSettings.xml stores the last state of the image asset wizard
 # (e.g. the icon which was last being added)
 .idea/assetWizardSettings.xml
-/.idea/assetWizardSettings.xml
+.idea/misc.xml
 
 # Markdown navigator plugin
 .idea/markdown-navigator.xml
@@ -39,8 +27,8 @@
 
 # Gradle files
 .gradle
-/build
-/engine-release/build
+build
+engine-release/build
 
 # Generated files
 bin/
@@ -49,10 +37,9 @@ out/
 
 # Local configuration file (sdk path, etc)
 local.properties
-/local.properties
 
 # Android Studio captures folder
-/captures
+captures
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
