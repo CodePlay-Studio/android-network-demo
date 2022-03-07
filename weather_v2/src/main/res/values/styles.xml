@@ -28,7 +28,7 @@
     </style>
 
     <style name="BasedFont.ExtraLarge" parent="BasedFont">
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">28sp</item>
     </style>
 
     <style name="BasedFont.Large" parent="BasedFont">

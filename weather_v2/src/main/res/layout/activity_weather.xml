@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    android:paddingHorizontal="@dimen/activity_horizontal_margin"
+    android:paddingVertical="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/source_text"
+        style="@style/SmallFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/weather_source"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/location_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
+        android:text="-, -"
+        android:textColor="@android:color/primary_text_dark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/source_text"
+        app:layout_constraintTop_toBottomOf="@+id/source_text"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/temperature_text"
+        style="@style/BasedFont.ExtraLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:text="-"
+        app:drawableEndCompat="@drawable/ic_celcius"
+        app:drawableLeftCompat="@drawable/ic_temperature"
+        app:drawableRightCompat="@drawable/ic_celcius"
+        app:drawableStartCompat="@drawable/ic_temperature"
+        app:layout_constraintStart_toStartOf="@+id/location_button"
+        app:layout_constraintTop_toBottomOf="@+id/location_button"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/history_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@null"
+        android:contentDescription="@string/history"
+        android:src="@drawable/ic_outline_history_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_day_clear_large" />
+
+    <TextView
+        android:id="@+id/description_text"
+        style="@style/BasedFont.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="@+id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toBottomOf="@+id/icon"
+        tools:ignore="HardcodedText"
+        tools:text="Clear" />
+
+    <TextView
+        android:id="@+id/wind_speed_text"
+        style="@style/BasedFont.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:text="- mps"
+        app:drawableLeftCompat="@drawable/ic_wind"
+        app:drawableStartCompat="@drawable/ic_wind"
+        app:layout_constraintBottom_toBottomOf="@+id/humidity_text"
+        app:layout_constraintEnd_toStartOf="@+id/humidity_text"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/humidity_text"
+        style="@style/BasedFont.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin"
+        android:drawablePadding="4dp"
+        android:text="-%"
+        app:drawableLeftCompat="@drawable/ic_humidity"
+        app:drawableStartCompat="@drawable/ic_humidity"
+        app:layout_constraintEnd_toStartOf="@+id/cloudiness_text"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/wind_speed_text"
+        app:layout_constraintTop_toBottomOf="@+id/description_text"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/cloudiness_text"
+        style="@style/BasedFont.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin"
+        android:drawablePadding="4dp"
+        android:text="-%"
+        app:drawableLeftCompat="@drawable/ic_cloudiness"
+        app:drawableStartCompat="@drawable/ic_cloudiness"
+        app:layout_constraintBottom_toBottomOf="@+id/humidity_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/humidity_text"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/refresh"
+        android:src="@drawable/ic_outline_refresh_24"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toBottomOf="@+id/humidity_text"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/spinner"
+        android:indeterminateOnly="true"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toTopOf="@+id/refresh_button"
+        tools:visibility="visible" />
+
+    <TextView
+        style="@style/SmallFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/copyright_statement"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/SmallFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/credit_statement"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

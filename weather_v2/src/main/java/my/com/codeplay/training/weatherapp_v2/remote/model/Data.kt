@@ -30,5 +30,6 @@ data class Clouds(
 
 @JsonClass(generateAdapter = true)
 data class Element(
-    val id: Int
+    val id: Int,
+    val description: String
 )

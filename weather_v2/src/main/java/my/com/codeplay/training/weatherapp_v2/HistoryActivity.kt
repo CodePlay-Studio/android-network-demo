@@ -7,20 +7,19 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import my.com.codeplay.training.weatherapp_v2.databinding.ActivityHistoryBinding
+import my.com.codeplay.training.weatherapp_v2.databinding.ActivityRecyclerviewBinding
 import my.com.codeplay.training.weatherapp_v2.db.WeatherDatabase
 import my.com.codeplay.training.weatherapp_v2.db.entity.Weather
 
 
 class HistoryActivity: AppCompatActivity() {
-
-    lateinit var binding: ActivityHistoryBinding
+    private lateinit var binding: ActivityRecyclerviewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHistoryBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+
+        binding = ActivityRecyclerviewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         Thread(
             object : Runnable {
@@ -55,7 +54,7 @@ class ItemAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         // create a new view
         val adapterLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item, parent, false)
+            .inflate(R.layout.item_history, parent, false)
 
         return ItemViewHolder(adapterLayout)
     }
