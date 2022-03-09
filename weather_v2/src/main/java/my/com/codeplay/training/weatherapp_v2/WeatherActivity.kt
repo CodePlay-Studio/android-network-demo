@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityWeatherBinding
-import my.com.codeplay.training.weatherapp_v2.db.WeatherDatabase
+import my.com.codeplay.training.weatherapp_v2.db.DatabaseManager
 import my.com.codeplay.training.weatherapp_v2.db.entity.Weather
 import my.com.codeplay.training.weatherapp_v2.remote.RetrofitServiceManager
 import my.com.codeplay.training.weatherapp_v2.remote.model.Data
@@ -131,7 +131,7 @@ class WeatherActivity : AppCompatActivity() {
 
                             // add the same record to local database
                             Thread {
-                                WeatherDatabase.getInstance(this@WeatherActivity).weatherDataDao()
+                                DatabaseManager.getInstance(this@WeatherActivity).weatherDataDao()
                                     .insert(
                                         Weather(
                                             it.name,

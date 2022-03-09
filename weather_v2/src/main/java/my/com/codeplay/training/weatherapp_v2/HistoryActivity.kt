@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityRecyclerviewBinding
-import my.com.codeplay.training.weatherapp_v2.db.WeatherDatabase
+import my.com.codeplay.training.weatherapp_v2.db.DatabaseManager
 import my.com.codeplay.training.weatherapp_v2.db.entity.Weather
 
 
@@ -24,7 +24,7 @@ class HistoryActivity: AppCompatActivity() {
         Thread(
             object : Runnable {
                 override fun run() {
-                    val allWeatherData = WeatherDatabase.getInstance(this@HistoryActivity)
+                    val allWeatherData = DatabaseManager.getInstance(this@HistoryActivity)
                         .weatherDataDao().getAll()
 
                     if (allWeatherData.isNotEmpty()) {
