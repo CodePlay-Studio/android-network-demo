@@ -12,6 +12,11 @@ abstract class DatabaseManager: RoomDatabase() {
 
     companion object {
         private const val DATABASE_NAME = "Weather.db"
+        // Annotate with @Volatile to make the database instance variable never be cached
+        // in CPU caches, and all writes and reads will be done to and from the main memory.
+        // This makes sure the value of instance is always up-to-date and the same to all
+        // execution threads.
+        @Volatile
         private var instance: DatabaseManager? = null
 
         fun getInstance(context: Context): DatabaseManager {
