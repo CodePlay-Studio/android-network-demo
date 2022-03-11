@@ -22,6 +22,11 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
+    <style name="WeatherPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/bg_popup</item>
+        <item name="android:dropDownHorizontalOffset">8dp</item>
+    </style>
+
     <style name="BasedFont" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>

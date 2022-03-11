@@ -6,9 +6,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Paint
 import android.os.Bundle
+import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityWeatherBinding
 import my.com.codeplay.training.weatherapp_v2.db.DatabaseManager
@@ -20,7 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class WeatherActivity : AppCompatActivity() {
+class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private val startActivityForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
@@ -57,28 +62,67 @@ class WeatherActivity : AppCompatActivity() {
                 })
             }
         }
-        binding.historyButton.setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
+        binding.menuButton.setOnClickListener {
+            PopupMenu(this, it).apply {
+                gravity = GravityCompat.END
+                setForceShowIcon(true)
+                setOnMenuItemClickListener(this@WeatherActivity)
+                inflate(R.menu.weather_popup)
+                show()
+            }
         }
         prefs = getPreferences(Context.MODE_PRIVATE)
         cityId = prefs.getInt(KEY_CITY_ID, 0)
 
         if (cityId > 0) {
             lastRecordTimestamp = prefs.getLong(KEY_TIMESTAMP, 0)
-            if (lastRecordTimestamp==0L || System.currentTimeMillis()-lastRecordTimestamp > INTERVAL_IN_MILLIS) {
+            if (isOutdated()) {
                 requestWeather(cityId)
             } else {
                 updateWeather()
             }
         } else {
             binding.locationButton.text = getString(R.string.select_a_city)
-            Snackbar.make(binding.root, R.string.select_a_city, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.set) {
-                    startActivityForResult.launch(cityListIntent)
-                }
-                .show()
+            promptSelectCity()
         }
     }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_refresh -> {
+                if (cityId == 0) {
+                    promptSelectCity()
+                    return true
+                }
+
+                if (binding.progress.isVisible.not()) {
+                    if (isOutdated())
+                        requestWeather(cityId)
+                    else
+                        Snackbar.make(binding.root, R.string.info_updated, Snackbar.LENGTH_SHORT)
+                            .show()
+                }
+                true
+            }
+            R.id.action_open_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
+                true
+            }
+            R.id.action_forecast -> {
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun promptSelectCity() = Snackbar.make(binding.root, R.string.select_a_city, Snackbar.LENGTH_INDEFINITE)
+        .setAction(R.string.set) {
+            startActivityForResult.launch(cityListIntent)
+        }
+        .show()
+
+    private fun isOutdated() = lastRecordTimestamp==0L
+            || System.currentTimeMillis()-lastRecordTimestamp > INTERVAL_IN_MILLIS
 
     private fun requestWeather(cityId: Int) {
         binding.progress.visibility = View.VISIBLE
@@ -116,6 +160,9 @@ class WeatherActivity : AppCompatActivity() {
                             val windspeed = it.wind.speed.toFloat()
                             // update last weather record in SharedPreferences
                             prefs.edit().apply {
+                                lastRecordTimestamp = System.currentTimeMillis()
+                                putLong(KEY_TIMESTAMP, lastRecordTimestamp)
+
                                 putInt(KEY_CITY_ID, cityId)
                                 putInt(KEY_WEATHER_ICON, iconResId)
                                 element?.description?.let { desc ->
@@ -186,7 +233,7 @@ class WeatherActivity : AppCompatActivity() {
         iconResId: Int = prefs.getInt(KEY_WEATHER_ICON, R.drawable.ic_unknown_large),
         description: String = prefs.getString(KEY_WEATHER_DESC, "Unknown")!!,
         location: String = prefs.getString(KEY_LOCATION, "-")!!,
-        temperature: String = prefs.getString(KEY_TIMESTAMP, "-")!!,
+        temperature: String = prefs.getString(KEY_TEMPERATURE, "-")!!,
         windspeed: Float = prefs.getFloat(KEY_WIND_SPEED, 0.0f),
         humidity: Int = prefs.getInt(KEY_HUMIDITY, 0),
         cloudiness: Int = prefs.getInt(KEY_CLOUDINESS, 0)
