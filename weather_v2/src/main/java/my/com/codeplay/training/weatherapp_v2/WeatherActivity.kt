@@ -33,8 +33,17 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             if (newCityId > 0) {
                 if (cityId != newCityId) {
                     cityId = newCityId
+                    cityLon = it.data!!.getFloatExtra(KEY_LONGITUDE, 0.0f)
+                    cityLat = it.data!!.getFloatExtra(KEY_LATITUDE, 0.0f)
+
+                    prefs.edit()
+                        .putInt(KEY_CITY_ID, cityId)
+                        .putFloat(KEY_LONGITUDE, cityLon)
+                        .putFloat(KEY_LATITUDE, cityLat)
+                        .apply()
+
                     requestWeather(cityId)
-                } else if (lastRecordTimestamp==0L || System.currentTimeMillis()-lastRecordTimestamp > INTERVAL_IN_MILLIS) {
+                } else if (isOutdated()) {
                     requestWeather(cityId)
                 }
             }
@@ -46,6 +55,8 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private lateinit var binding: ActivityWeatherBinding
     private lateinit var prefs: SharedPreferences
     private var cityId = 0
+    private var cityLon = 0.0f
+    private var cityLat = 0.0f
     private var lastRecordTimestamp = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,7 +174,6 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                                 lastRecordTimestamp = System.currentTimeMillis()
                                 putLong(KEY_TIMESTAMP, lastRecordTimestamp)
 
-                                putInt(KEY_CITY_ID, cityId)
                                 putInt(KEY_WEATHER_ICON, iconResId)
                                 element?.description?.let { desc ->
                                     putString(KEY_WEATHER_DESC, desc)
