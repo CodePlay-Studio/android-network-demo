@@ -27,34 +27,11 @@
         <item name="android:dropDownHorizontalOffset">8dp</item>
     </style>
 
-    <style name="BasedFont" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@android:color/white</item>
+    <style name="TextAppearance.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="BasedFont.ExtraLarge" parent="BasedFont">
-        <item name="android:textSize">28sp</item>
-    </style>
-
-    <style name="BasedFont.Large" parent="BasedFont">
-        <item name="android:textSize">24sp</item>
-    </style>
-
-    <style name="BasedFont.Medium" parent="BasedFont">
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="BasedFont.Small" parent="BasedFont">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="BasedFont.ExtraSmall" parent="BasedFont">
-        <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="SmallFont" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">bold</item>
+    <style name="TextAppearance.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
     </style>
 
 </resources>
