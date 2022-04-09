@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Weather</string>
-    <string name="copyright_statement">Copyright © CodePlay Studio 2017–2022</string>
 
     <!-- WeatherActivity -->
     <string name="loading">Loading&#8230;</string>
@@ -9,17 +8,27 @@
     <string name="wind_speed" formatted="false">%1$.2f mps</string>
     <string name="percent" formatted="false">%1$d%%</string>
     <string name="weather_source">Weather source from OpenWeatherMap</string>
+    <string name="copyright_statement">Copyright © CodePlay Studio 2017–2022</string>
     <string name="credit_statement">CREDIT Climacons by @adamwhitcroft.</string>
+    <string name="select_a_city">Select a city</string>
+    <string name="set">Set</string>
+    <string name="info_updated">Weather info is updated</string>
 
     <string name="menu">Popup Menu</string>
     <string name="refresh">Refresh</string>
     <string name="history">History</string>
-    <string name="forecast">7 Days Forecast</string>
+    <string name="forecast">Forecast</string>
 
+    <!-- ForecastActivity -->
+    <string name="weather_forecast">Weather Forecast</string>
+    <string name="current_weather">Current Weather</string>
+    <string name="_7_days_forecast">7 Days Forecast</string>
+    <string name="today">Today</string>
+    <string name="temperature_range">%1$.2f-%2$.2f℃</string>
+
+    <!-- error messages -->
     <string name="err_no_connection">No Connection</string>
     <string name="err_statement">Request timeout. Please try again.</string>
     <string name="err_request_failed">Failed to retrieve weather: %s</string>
-    <string name="select_a_city">Select a city</string>
-    <string name="set">Set</string>
-    <string name="info_updated">Weather info is updated</string>
+
 </resources>

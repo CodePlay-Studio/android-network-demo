@@ -15,5 +15,6 @@ const val KEY_LATITUDE = "latitude"
 const val KEY_TIMESTAMP = "timestamp"
 
 const val EXTRA_CITY_ID = "${BuildConfig.APPLICATION_ID}.extra.CITY_ID"
+const val EXTRA_CITY_NAME = "${BuildConfig.APPLICATION_ID}.extra.CITY_NAME"
 const val EXTRA_CITY_LON = "${BuildConfig.APPLICATION_ID}.extra.CITY_LON"
 const val EXTRA_CITY_LAT = "${BuildConfig.APPLICATION_ID}.extra.CITY_LAT"

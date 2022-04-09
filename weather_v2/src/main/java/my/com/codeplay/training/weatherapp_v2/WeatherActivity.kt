@@ -6,10 +6,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Paint
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
@@ -33,11 +32,13 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             if (newCityId > 0) {
                 if (cityId != newCityId) {
                     cityId = newCityId
-                    cityLon = it.data!!.getFloatExtra(KEY_LONGITUDE, 0.0f)
-                    cityLat = it.data!!.getFloatExtra(KEY_LATITUDE, 0.0f)
+                    cityName = it.data!!.getStringExtra(EXTRA_CITY_NAME)!!
+                    cityLon = it.data!!.getFloatExtra(EXTRA_CITY_LON, 0.0f)
+                    cityLat = it.data!!.getFloatExtra(EXTRA_CITY_LAT, 0.0f)
 
                     prefs.edit()
                         .putInt(KEY_CITY_ID, cityId)
+                        .putString(KEY_LOCATION, cityName)
                         .putFloat(KEY_LONGITUDE, cityLon)
                         .putFloat(KEY_LATITUDE, cityLat)
                         .apply()
@@ -55,6 +56,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private lateinit var binding: ActivityWeatherBinding
     private lateinit var prefs: SharedPreferences
     private var cityId = 0
+    private var cityName = "-"
     private var cityLon = 0.0f
     private var cityLat = 0.0f
     private var lastRecordTimestamp = 0L
@@ -68,9 +70,13 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         binding.locationButton.apply {
             paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
             setOnClickListener {
+                /* replace with single choice dialog
                 startActivityForResult.launch(cityListIntent.also {
                     it.putExtra(EXTRA_CITY_ID, cityId)
                 })
+                // */
+
+                promptSelectCityDialog(if (cityId > 0) cities.indexOfFirst { it.id == cityId } else 0)
             }
         }
         binding.menuButton.setOnClickListener {
@@ -86,6 +92,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         cityId = prefs.getInt(KEY_CITY_ID, 0)
 
         if (cityId > 0) {
+            cityName = prefs.getString(KEY_LOCATION, "-")!!
             lastRecordTimestamp = prefs.getLong(KEY_TIMESTAMP, 0)
             if (isOutdated()) {
                 requestWeather(cityId)
@@ -120,6 +127,16 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 true
             }
             R.id.action_forecast -> {
+                if (cityId == 0) {
+                    promptSelectCity()
+                    return true
+                }
+
+                startActivity(Intent(this, ForecastActivity::class.java).apply {
+                    putExtra(EXTRA_CITY_NAME, cityName)
+                    putExtra(EXTRA_CITY_LON, cityLon)
+                    putExtra(EXTRA_CITY_LAT, cityLat)
+                })
                 true
             }
             else -> false
@@ -128,45 +145,54 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     private fun promptSelectCity() = Snackbar.make(binding.root, R.string.select_a_city, Snackbar.LENGTH_INDEFINITE)
         .setAction(R.string.set) {
-            startActivityForResult.launch(cityListIntent)
+            //startActivityForResult.launch(cityListIntent)
+            promptSelectCityDialog()
         }
+        .show()
+
+    private fun promptSelectCityDialog(checkedItem: Int = 0) = AlertDialog.Builder(this, R.style.WeatherAlertDialog)
+        .setTitle(R.string.select_a_city)
+        .setSingleChoiceItems(cities.map { it.name }.toTypedArray(), checkedItem) { dialog, position ->
+            with(cities[position]) {
+                if (cityId != id) {
+                    cityId = id
+                    cityName = name
+                    cityLon = lon
+                    cityLat = lat
+
+                    prefs.edit()
+                        .putInt(KEY_CITY_ID, cityId)
+                        .putString(KEY_LOCATION, cityName)
+                        .putFloat(KEY_LONGITUDE, cityLon)
+                        .putFloat(KEY_LATITUDE, cityLat)
+                        .apply()
+
+                    requestWeather(cityId)
+                } else if (isOutdated()) {
+                    requestWeather(cityId)
+                }
+            }
+            dialog.dismiss()
+        }
+        .setPositiveButton(android.R.string.cancel, null)
+        .create()
         .show()
 
     private fun isOutdated() = lastRecordTimestamp==0L
             || System.currentTimeMillis()-lastRecordTimestamp > INTERVAL_IN_MILLIS
 
     private fun requestWeather(cityId: Int) {
-        binding.progress.visibility = View.VISIBLE
+        binding.progress.isVisible = true
 
-        RetrofitServiceManager.retrofitService.getWeatherData(cityId).enqueue(
+        RetrofitServiceManager.weatherService.getWeatherData(cityId).enqueue(
             object: Callback<Data> {
                 override fun onResponse(call: Call<Data>, response: Response<Data>) {
-                    binding.progress.visibility = View.GONE
+                    binding.progress.isVisible = false
 
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            val element = it.weather.firstOrNull()
-                            val iconResId = when(element?.id) {
-                                //200, 201, 202, 210, 211, 212, 221, 230, 231, 232 -> R.drawable.ic_thunderstorm_large
-                                //300, 301, 302, 310, 311, 312, 313, 314, 321 -> R.drawable.ic_drizzle_large
-                                //500, 501, 502, 503, 504, 511, 520, 521, 522, 531 -> R.drawable.ic_rain_large
-                                //600, 601, 602, 611, 612, 615, 616, 620, 621, 622 -> R.drawable.ic_snow_large
-                                in 200..232 -> R.drawable.ic_thunderstorm_large
-                                in 300..321 -> R.drawable.ic_drizzle_large
-                                in 500..531 -> R.drawable.ic_rain_large
-                                in 600..622 -> R.drawable.ic_snow_large
-                                800 -> R.drawable.ic_day_clear_large
-                                801 -> R.drawable.ic_day_few_clouds_large
-                                802 -> R.drawable.ic_scattered_clouds_large
-                                803, 804 -> R.drawable.ic_broken_clouds_large
-                                //701, 711, 721, 731, 741, 751, 761, 762 -> R.drawable.ic_fog_large
-                                in 701..762 -> R.drawable.ic_fog_large
-                                781, 900 -> R.drawable.ic_tornado_large
-                                905 -> R.drawable.ic_windy_large
-                                906 -> R.drawable.ic_hail_large
-                                else -> R.drawable.ic_unknown_large
-                            }
-
+                            val element = it.weather.first()
+                            val iconResId = getWeatherIcon(element.id)
                             val temperature = it.main.temp.toString()
                             val windspeed = it.wind.speed.toFloat()
                             // update last weather record in SharedPreferences
@@ -175,9 +201,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                                 putLong(KEY_TIMESTAMP, lastRecordTimestamp)
 
                                 putInt(KEY_WEATHER_ICON, iconResId)
-                                element?.description?.let { desc ->
-                                    putString(KEY_WEATHER_DESC, desc)
-                                }
+                                putString(KEY_WEATHER_DESC, element.description)
                                 putString(KEY_LOCATION, it.name)
                                 putString(KEY_TEMPERATURE, temperature)
                                 putFloat(KEY_WIND_SPEED, windspeed)
@@ -203,7 +227,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
                             updateWeather(
                                 iconResId,
-                                element?.description ?: "Unknown",
+                                element.description,
                                 it.name,
                                 temperature,
                                 windspeed,
@@ -224,7 +248,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 }
 
                 override fun onFailure(call: Call<Data>, t: Throwable) {
-                    binding.progress.visibility = View.GONE
+                    binding.progress.isVisible = false
 
                     Snackbar.make(
                         binding.root,
@@ -249,11 +273,43 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         cloudiness: Int = prefs.getInt(KEY_CLOUDINESS, 0)
     ) {
         binding.icon.setImageResource(iconResId)
-        binding.descriptionText.text = description
+        binding.descriptionText.text = description.toTitleCase()
         binding.locationButton.text = getString(R.string.location, location)
         binding.temperatureText.text = temperature
         binding.windSpeedText.text = getString(R.string.wind_speed, windspeed)
         binding.humidityText.text = getString(R.string.percent, humidity)
         binding.cloudinessText.text = getString(R.string.percent, cloudiness)
     }
+}
+
+// reference: https://openweathermap.org/weather-conditions#How-to-get-icon-URL
+fun getWeatherIcon(conditionId: Int) = when(conditionId) {
+    //200, 201, 202, 210, 211, 212, 221, 230, 231, 232 -> R.drawable.ic_thunderstorm_large
+    //300, 301, 302, 310, 311, 312, 313, 314, 321 -> R.drawable.ic_drizzle_large
+    //500, 501, 502, 503, 504, 511, 520, 521, 522, 531 -> R.drawable.ic_rain_large
+    //600, 601, 602, 611, 612, 615, 616, 620, 621, 622 -> R.drawable.ic_snow_large
+    in 200..232 -> R.drawable.ic_thunderstorm_large
+    in 300..321 -> R.drawable.ic_drizzle_large
+    in 500..531 -> R.drawable.ic_rain_large
+    in 600..622 -> R.drawable.ic_snow_large
+    800 -> R.drawable.ic_day_clear_large
+    801 -> R.drawable.ic_day_few_clouds_large
+    802 -> R.drawable.ic_scattered_clouds_large
+    803, 804 -> R.drawable.ic_broken_clouds_large
+    //701, 711, 721, 731, 741, 751, 761, 762 -> R.drawable.ic_fog_large
+    in 701..762 -> R.drawable.ic_fog_large
+    781, 900 -> R.drawable.ic_tornado_large
+    905 -> R.drawable.ic_windy_large
+    906 -> R.drawable.ic_hail_large
+    else -> R.drawable.ic_unknown_large
+}
+
+fun String.toTitleCase(): String {
+    var output = ""
+    for (word in split(" ")) {
+        output += word.replaceFirstChar {
+            it.uppercaseChar()
+        } + " "
+    }
+    return output.trim()
 }

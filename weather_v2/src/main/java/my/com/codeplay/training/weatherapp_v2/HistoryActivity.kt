@@ -55,7 +55,6 @@ class ItemAdapter(
         // create a new view
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_history, parent, false)
-
         return ItemViewHolder(adapterLayout)
     }
 

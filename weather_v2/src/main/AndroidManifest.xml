@@ -12,30 +12,42 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/DarkActionBarAppTheme"
+        android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
-        <activity
-            android:name=".ForecastActivity"
-            android:exported="false" />
+
         <activity
             android:name=".WeatherActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarAppTheme">
+            android:theme="@style/AppTheme.NoActionBar.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".CityListActivity"
+            android:exported="false"
             android:label="@string/select_a_city"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".HistoryActivity"
+            android:exported="false"
             android:label="@string/history"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".WeatherActivity" />
+
+        <activity
+            android:name=".ForecastActivity"
+            android:exported="false"
+            android:label="@string/weather_forecast"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".WeatherActivity" />
+
     </application>
 
 </manifest>

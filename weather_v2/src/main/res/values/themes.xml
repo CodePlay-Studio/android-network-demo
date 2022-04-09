@@ -32,12 +32,15 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Dark">
         <item name="android:navigationBarColor">?attr/colorSecondary</item>
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- set an empty parent to ensure only override the attributes we want -->

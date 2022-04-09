@@ -13,12 +13,12 @@ object RetrofitServiceManager {
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    private val retrofitBuilder = Retrofit.Builder()
+    private val builder = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .baseUrl(baseUrl)
         .build()
 
-    val retrofitService : WeatherService by lazy {
-        retrofitBuilder.create(WeatherService::class.java)
+    val weatherService : WeatherService by lazy {
+        builder.create(WeatherService::class.java)
     }
 }
