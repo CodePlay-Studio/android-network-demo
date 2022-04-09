@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -61,6 +62,8 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private var cityLat = 0.0f
     private var lastRecordTimestamp = 0L
 
+    private val viewModel: WeatherViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -102,6 +105,46 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         } else {
             binding.locationButton.text = getString(R.string.select_a_city)
             promptSelectCity()
+        }
+
+        viewModel.data.observe(this) {
+            binding.progress.isVisible = false
+
+            val element = it.weather.first()
+            val iconResId = getWeatherIcon(element.id)
+            val temperature = it.main.temp.toString()
+            val windspeed = it.wind.speed.toFloat()
+            updateWeather(
+                iconResId,
+                element.description,
+                it.name,
+                temperature,
+                windspeed,
+                it.main.humidity,
+                it.clouds.all
+            )
+        }
+
+        viewModel.errMsg.observe(this) {
+            binding.progress.isVisible = false
+
+            if (it.isEmpty())
+                return@observe
+
+            Snackbar.make(
+                binding.root,
+                getString(
+                    R.string.err_request_failed,
+                    it ?: "Unknown Error"
+                ),
+                Snackbar.LENGTH_LONG
+            ).addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+
+                    viewModel.notifyErrMsgPrompted()
+                }
+            }).show()
         }
     }
 
@@ -184,7 +227,9 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private fun requestWeather(cityId: Int) {
         binding.progress.isVisible = true
 
-        RetrofitServiceManager.weatherService.getWeatherData(cityId).enqueue(
+        viewModel.requestWeahtherUpdate(cityId)
+
+        /*RetrofitServiceManager.weatherService.getWeatherData(cityId).enqueue(
             object: Callback<Data> {
                 override fun onResponse(call: Call<Data>, response: Response<Data>) {
                     binding.progress.isVisible = false
@@ -260,7 +305,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     ).show()
                 }
             }
-        )
+        )*/
     }
 
     private fun updateWeather(
