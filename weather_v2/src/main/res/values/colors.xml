@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="brand_blue">#0487E2</color>
-    <color name="brand_blue_light_variant">#62B6FF</color>
-    <color name="brand_blue_dark_variant">#005BAF</color>
+    <color name="brand_blue">#0069BF</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="weather_clear_sky">#FFCC80</color>
+    <color name="weather_cloudy">#D5D5D5</color>
+    <color name="weather_rain">#BBDEFF</color>
+    <color name="weather_hail_and_snow">#FFFAFA</color>
 </resources>

@@ -27,11 +27,20 @@
         <item name="android:dropDownHorizontalOffset">8dp</item>
     </style>
 
+    <style name="WeatherAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="colorPrimary">@color/brand_blue</item>
+        <item name="colorSecondary">?attr/colorPrimary</item>
+    </style>
+
     <style name="TextAppearance.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+    </style>
+
+    <style name="Test" parent="Widget.MaterialComponents.CardView">
+
     </style>
 
 </resources>

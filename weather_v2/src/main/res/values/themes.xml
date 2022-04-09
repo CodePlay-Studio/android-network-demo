@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <!-- default values -->
         <!--<item name="colorPrimary">#6200EE</item>-->
         <!--<item name="colorPrimaryVariant">#3700B3</item>-->
@@ -16,22 +16,26 @@
         <item name="colorOnError">#FFFFFF</item>
 
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/brand_blue</item>
-        <item name="colorPrimaryVariant">@color/brand_blue_dark_variant</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">?attr/colorPrimary</item>
-        <item name="colorSecondaryVariant">?attr/colorPrimaryVariant</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/brand_blue</item>
+        <item name="colorSecondaryVariant">?attr/colorSecondary</item>
 
         <!--<item name="android:windowFullscreen">true</item>-->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!--<item name="android:windowLightStatusBar" tools:targetApi="m">true</item>-->
         <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
-        <!--<item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>-->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="popupMenuStyle">@style/WeatherPopupMenu</item>
 
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <item name="android:navigationBarColor">?attr/colorSecondary</item>
+        <item name="android:statusBarColor">?attr/colorSecondary</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -41,6 +45,8 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
         <item name="android:textColorSecondary">?attr/colorOnPrimary</item>
+        <item name="colorPrimary">@color/brand_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="materialButtonStyle">@style/ThemeOverlay.WeatherDashboard.TextButton</item>
     </style>
 
