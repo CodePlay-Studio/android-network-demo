@@ -1,4 +1,4 @@
-package my.com.codeplay.training.weatherapp_v2
+package my.com.codeplay.training.weatherapp_v2.ui.citylist
 
 import android.app.Activity
 import android.content.Intent
@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import my.com.codeplay.training.weatherapp_v2.*
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityRecyclerviewBinding
 
 val cities = listOf(
@@ -43,6 +44,13 @@ val cities = listOf(
     City(1733047, "Pulau Pinang", 100.258476f, 5.37677f),
     City(1733048, "Kedah", 100.666672f, 6.0f),
     City(1733049, "Johor", 103.5f, 2.0f),
+)
+
+data class City(
+    val id: Int,
+    val name: String,
+    val lon: Float,
+    val lat: Float
 )
 
 class CityListActivity : AppCompatActivity() {

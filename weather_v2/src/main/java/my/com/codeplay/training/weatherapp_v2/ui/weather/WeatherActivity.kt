@@ -1,4 +1,4 @@
-package my.com.codeplay.training.weatherapp_v2
+package my.com.codeplay.training.weatherapp_v2.ui.weather
 
 import android.app.Activity
 import android.content.Context
@@ -15,14 +15,11 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
+import my.com.codeplay.training.weatherapp_v2.*
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityWeatherBinding
-import my.com.codeplay.training.weatherapp_v2.db.DatabaseManager
-import my.com.codeplay.training.weatherapp_v2.db.entity.Weather
-import my.com.codeplay.training.weatherapp_v2.remote.RetrofitServiceManager
-import my.com.codeplay.training.weatherapp_v2.remote.model.Data
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import my.com.codeplay.training.weatherapp_v2.ui.citylist.CityListActivity
+import my.com.codeplay.training.weatherapp_v2.ui.citylist.cities
+import my.com.codeplay.training.weatherapp_v2.ui.forecast.ForecastActivity
 
 
 class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
@@ -78,7 +75,6 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     it.putExtra(EXTRA_CITY_ID, cityId)
                 })
                 // */
-
                 promptSelectCityDialog(if (cityId > 0) cities.indexOfFirst { it.id == cityId } else 0)
             }
         }
@@ -91,6 +87,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 show()
             }
         }
+
         prefs = getPreferences(Context.MODE_PRIVATE)
         cityId = prefs.getInt(KEY_CITY_ID, 0)
 
@@ -107,27 +104,34 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             promptSelectCity()
         }
 
-        viewModel.data.observe(this) {
-            binding.progress.isVisible = false
+        viewModel.weatherData.observe(this) {
+            // update last weather record in SharedPreferences
+            prefs.edit().apply {
+                lastRecordTimestamp = System.currentTimeMillis()
+                putLong(KEY_TIMESTAMP, lastRecordTimestamp)
 
-            val element = it.weather.first()
-            val iconResId = getWeatherIcon(element.id)
-            val temperature = it.main.temp.toString()
-            val windspeed = it.wind.speed.toFloat()
+                putInt(KEY_WEATHER_ICON, it.iconId)
+                putString(KEY_WEATHER_DESC, it.description)
+                putString(KEY_LOCATION, it.location)
+                putString(KEY_TEMPERATURE, it.temperature)
+                putFloat(KEY_WIND_SPEED, it.windSpeed.toFloat())
+                putInt(KEY_HUMIDITY, it.humidity.toInt())
+                putInt(KEY_CLOUDINESS, it.cloudiness.toInt())
+                apply()
+            }
+
             updateWeather(
-                iconResId,
-                element.description,
-                it.name,
-                temperature,
-                windspeed,
-                it.main.humidity,
-                it.clouds.all
+                it.iconId,
+                it.description,
+                it.location,
+                it.temperature,
+                it.windSpeed.toFloat(),
+                it.humidity.toInt(),
+                it.cloudiness.toInt()
             )
         }
 
         viewModel.errMsg.observe(this) {
-            binding.progress.isVisible = false
-
             if (it.isEmpty())
                 return@observe
 
@@ -145,6 +149,10 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     viewModel.notifyErrMsgPrompted()
                 }
             }).show()
+        }
+
+        viewModel.isProcessing.observe(this) {
+            binding.progress.isVisible = it
         }
     }
 
@@ -193,26 +201,29 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }
         .show()
 
-    private fun promptSelectCityDialog(checkedItem: Int = 0) = AlertDialog.Builder(this, R.style.WeatherAlertDialog)
+    private fun promptSelectCityDialog(checkedItem: Int = 0)
+        = AlertDialog.Builder(this, R.style.WeatherAlertDialog)
         .setTitle(R.string.select_a_city)
         .setSingleChoiceItems(cities.map { it.name }.toTypedArray(), checkedItem) { dialog, position ->
             with(cities[position]) {
-                if (cityId != id) {
-                    cityId = id
-                    cityName = name
-                    cityLon = lon
-                    cityLat = lat
+                when {
+                    cityId != id -> {
+                        cityId = id
+                        cityName = name
+                        cityLon = lon
+                        cityLat = lat
 
-                    prefs.edit()
-                        .putInt(KEY_CITY_ID, cityId)
-                        .putString(KEY_LOCATION, cityName)
-                        .putFloat(KEY_LONGITUDE, cityLon)
-                        .putFloat(KEY_LATITUDE, cityLat)
-                        .apply()
+                        prefs.edit()
+                            .putInt(KEY_CITY_ID, cityId)
+                            .putString(KEY_LOCATION, cityName)
+                            .putFloat(KEY_LONGITUDE, cityLon)
+                            .putFloat(KEY_LATITUDE, cityLat)
+                            .apply()
 
-                    requestWeather(cityId)
-                } else if (isOutdated()) {
-                    requestWeather(cityId)
+                        requestWeather(cityId)
+                    }
+                    isOutdated() -> requestWeather(cityId)
+                    else -> { /* do nothing */ }
                 }
             }
             dialog.dismiss()
@@ -224,89 +235,7 @@ class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private fun isOutdated() = lastRecordTimestamp==0L
             || System.currentTimeMillis()-lastRecordTimestamp > INTERVAL_IN_MILLIS
 
-    private fun requestWeather(cityId: Int) {
-        binding.progress.isVisible = true
-
-        viewModel.requestWeahtherUpdate(cityId)
-
-        /*RetrofitServiceManager.weatherService.getWeatherData(cityId).enqueue(
-            object: Callback<Data> {
-                override fun onResponse(call: Call<Data>, response: Response<Data>) {
-                    binding.progress.isVisible = false
-
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            val element = it.weather.first()
-                            val iconResId = getWeatherIcon(element.id)
-                            val temperature = it.main.temp.toString()
-                            val windspeed = it.wind.speed.toFloat()
-                            // update last weather record in SharedPreferences
-                            prefs.edit().apply {
-                                lastRecordTimestamp = System.currentTimeMillis()
-                                putLong(KEY_TIMESTAMP, lastRecordTimestamp)
-
-                                putInt(KEY_WEATHER_ICON, iconResId)
-                                putString(KEY_WEATHER_DESC, element.description)
-                                putString(KEY_LOCATION, it.name)
-                                putString(KEY_TEMPERATURE, temperature)
-                                putFloat(KEY_WIND_SPEED, windspeed)
-                                putInt(KEY_HUMIDITY, it.main.humidity)
-                                putInt(KEY_CLOUDINESS, it.clouds.all)
-                                apply()
-                            }
-
-                            // add the same record to local database
-                            Thread {
-                                DatabaseManager.getInstance(this@WeatherActivity).weatherDataDao()
-                                    .insert(
-                                        Weather(
-                                            it.name,
-                                            temperature,
-                                            windspeed.toString(),
-                                            it.main.humidity.toString(),
-                                            it.clouds.all.toString(),
-                                            iconResId
-                                        )
-                                    )
-                            }.start()
-
-                            updateWeather(
-                                iconResId,
-                                element.description,
-                                it.name,
-                                temperature,
-                                windspeed,
-                                it.main.humidity,
-                                it.clouds.all
-                            )
-                        }
-                    } else {
-                        Snackbar.make(
-                            binding.root,
-                            getString(
-                                R.string.err_request_failed,
-                                response.message() ?: "Unknown Error"
-                            ),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<Data>, t: Throwable) {
-                    binding.progress.isVisible = false
-
-                    Snackbar.make(
-                        binding.root,
-                        getString(
-                            R.string.err_request_failed,
-                            t.message ?: "Unknown Error"
-                        ),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            }
-        )*/
-    }
+    private fun requestWeather(cityId: Int) = viewModel.requestWeatherUpdate(cityId)
 
     private fun updateWeather(
         iconResId: Int = prefs.getInt(KEY_WEATHER_ICON, R.drawable.ic_unknown_large),

@@ -12,5 +12,5 @@ interface WeatherDataDao {
     fun getAll(): List<Weather>
 
     @Insert
-    fun insert(weatherData: Weather)
+    suspend fun insert(weatherData: Weather)
 }

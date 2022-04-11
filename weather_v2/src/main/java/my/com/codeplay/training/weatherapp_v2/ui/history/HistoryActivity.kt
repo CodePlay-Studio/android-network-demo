@@ -1,4 +1,4 @@
-package my.com.codeplay.training.weatherapp_v2
+package my.com.codeplay.training.weatherapp_v2.ui.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import my.com.codeplay.training.weatherapp_v2.R
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityRecyclerviewBinding
 import my.com.codeplay.training.weatherapp_v2.db.DatabaseManager
 import my.com.codeplay.training.weatherapp_v2.db.entity.Weather

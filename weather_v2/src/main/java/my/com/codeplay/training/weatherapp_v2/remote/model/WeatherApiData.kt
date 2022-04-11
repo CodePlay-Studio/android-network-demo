@@ -1,14 +1,16 @@
 package my.com.codeplay.training.weatherapp_v2.remote.model
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Data(
+data class WeatherApiData(
     val name: String,
     val main: Main,
     val wind: Wind,
     val clouds: Clouds,
-    val weather: List<Element>
+    val weather: List<Element>,
+    @Json(name = "dt") val datetime: Long
 )
 
 @JsonClass(generateAdapter = true)

@@ -16,7 +16,7 @@
         tools:ignore="LockedOrientationActivity">
 
         <activity
-            android:name=".WeatherActivity"
+            android:name=".ui.weather.WeatherActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Dark">
@@ -28,25 +28,25 @@
         </activity>
 
         <activity
-            android:name=".CityListActivity"
+            android:name=".ui.citylist.CityListActivity"
             android:exported="false"
             android:label="@string/select_a_city"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".HistoryActivity"
+            android:name=".ui.history.HistoryActivity"
             android:exported="false"
             android:label="@string/history"
             android:screenOrientation="portrait"
-            android:parentActivityName=".WeatherActivity" />
+            android:parentActivityName=".ui.weather.WeatherActivity" />
 
         <activity
-            android:name=".ForecastActivity"
+            android:name=".ui.forecast.ForecastActivity"
             android:exported="false"
             android:label="@string/weather_forecast"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".WeatherActivity" />
+            android:parentActivityName=".ui.weather.WeatherActivity" />
 
     </application>
 

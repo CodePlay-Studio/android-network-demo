@@ -1,29 +1,25 @@
-package my.com.codeplay.training.weatherapp_v2
+package my.com.codeplay.training.weatherapp_v2.ui.forecast
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import my.com.codeplay.training.weatherapp_v2.*
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityForecastBinding
 import my.com.codeplay.training.weatherapp_v2.databinding.ItemForecastBinding
 import my.com.codeplay.training.weatherapp_v2.remote.RetrofitServiceManager
 import my.com.codeplay.training.weatherapp_v2.remote.model.Daily
 import my.com.codeplay.training.weatherapp_v2.remote.model.Forecast
+import my.com.codeplay.training.weatherapp_v2.ui.weather.getWeatherIcon
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.DateFormat
-import java.time.Instant
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ForecastActivity : AppCompatActivity() {
