@@ -15,13 +15,15 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import my.com.codeplay.training.weatherapp_v2.*
 import my.com.codeplay.training.weatherapp_v2.databinding.ActivityWeatherBinding
 import my.com.codeplay.training.weatherapp_v2.ui.citylist.CityListActivity
 import my.com.codeplay.training.weatherapp_v2.ui.citylist.cities
 import my.com.codeplay.training.weatherapp_v2.ui.forecast.ForecastActivity
+import my.com.codeplay.training.weatherapp_v2.ui.history.HistoryActivity
 
-
+@AndroidEntryPoint
 class WeatherActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private val startActivityForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) {
